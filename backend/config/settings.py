@@ -89,12 +89,23 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 
 # ==============================================================================
-# 3. DATABASE CONFIGURATION (Local SQLite / Production MySQL)
+# 3. DATABASE CONFIGURATION (Render PostgreSQL / Production MySQL / Local SQLite)
 # ==============================================================================
 
+DATABASE_URL = os.getenv("DATABASE_URL")
 DB_ENGINE = os.getenv("DB_ENGINE", "django.db.backends.sqlite3")
 
-if DB_ENGINE == "django.db.backends.mysql" or (os.getenv("DB_NAME") and DB_ENGINE != "django.db.backends.sqlite3"):
+if DATABASE_URL:
+    import dj_database_url
+
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+elif DB_ENGINE == "django.db.backends.mysql" or (os.getenv("DB_NAME") and DB_ENGINE != "django.db.backends.sqlite3"):
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.mysql",
