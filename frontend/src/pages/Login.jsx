@@ -134,22 +134,6 @@ export default function Login({ onLogin, onLoginSuccess, onNavigate }) {
               {busy ? 'Please wait…' : register ? 'Create Account' : 'Login'}
             </button>
           </form>
-          {!register && (
-            <>
-              <div className="or">
-                <span></span>
-                <em>Or sign in with</em>
-                <span></span>
-              </div>
-              <button
-                type="button"
-                className="google-btn"
-                onClick={() => setError('Google sign-in is not configured in the supplied Django backend.')}
-              >
-                <span className="google-g">G</span>Sign in with Google
-              </button>
-            </>
-          )}
           <div className="account-switch">
             {register ? 'Already have an account?' : 'Not registered yet?'}{' '}
             <button
